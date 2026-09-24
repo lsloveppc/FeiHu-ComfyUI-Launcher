@@ -209,6 +209,20 @@ ComfyUI 日志与启动器日志分区显示，支持错误高亮和目录快捷
 
 启动器只在检测到界面**真的**卡住时取样一次当前调用栈并写入 `data/stall.log`，平时不做任何转储。反馈问题时附上该文件，可以直接定位到是哪一步在阻塞；若启动器异常退出，再附上 `data/fault.log`。
 
+### 更新 ComfyUI 后启动失败，报 ModuleNotFoundError
+
+ComfyUI 更新内核后 `requirements.txt` 会带上新依赖（例如 `comfy-aimdo`）。启动器**更新 ComfyUI 时会自动同步依赖**；如果你是手动 `git pull` 更新的，点「环境管理 → 补装 ComfyUI 依赖」即可（等价于 `pip install -r requirements.txt --upgrade-strategy only-if-needed`，只补缺失/落后的，不会重装 torch）。启动失败时如果日志里出现 `ModuleNotFoundError`，控制台与首页提示条会直接告诉你缺哪个包。
+
+### 重开后上次的工作流不见了（页面底部弹「保存工作流草稿失败」）
+
+这是 **ComfyUI 前端把"当前工作流"存在浏览器 localStorage 里**导致的，不是启动器的问题（用官方方式开浏览器访问一样会遇到）。它的存储上限只有约 5 MB 每个站点，而前端最多保留 32 份工作流草稿，再加上某些插件也会往 localStorage 塞缓存，很容易塞满；一旦写入失败，**本次会话后续所有草稿都存不进去**，重开就只剩默认工作流。
+
+判断与修复：
+
+1. 先确认 ComfyUI 设置里 **「Persist workflow state and restore on page (re)load」是打开的**（设置里搜 `Persist`）。默认是开，但导入过别人的设置文件的可能被关掉。
+2. 若页面底部弹「保存工作流草稿失败」，按 `F12` → **Application（应用）** → **Local Storage** → 选中 ComfyUI 地址，删掉插件塞的缓存键（常见如 `anima_` 开头的模型列表缓存、各种 `*_settings_*` 大键），或直接清掉该站点的数据（ComfyUI 的设置保存在服务端 `user/default/comfy.settings.json`，清站点数据不会丢配置）。
+3. **刷新页面**后再打开工作流正常编辑一次——之后重开就能回到上次的工作流。
+
 ## 开源与许可
 
 启动器发布包为预编译 EXE，不包含本项目源代码。ComfyUI、插件和模型遵循各自项目及作者的许可证。
