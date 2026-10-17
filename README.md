@@ -93,7 +93,7 @@ ComfyUI 日志与启动器日志分区显示，支持错误高亮和目录快捷
 
 ### 使用 EXE
 
-1. 从仓库 Releases 下载 `FeiHu-ComfyUI-Launcher-v1.1.zip`，解压得到「绯狐启动器」文件夹。
+1. 从仓库 Releases 下载 `FeiHu-ComfyUI-Launcher-v1.1.7z`（用 7-Zip、Bandizip 或 NanaZip 解压），解压得到「绯狐启动器」文件夹。
 2. 文件夹内有 `绯狐启动器.exe` 与 `绯狐图片管理器.exe`，请让两者保持**同一目录**（启动器的「图片管理」需要调用同目录的图片管理器）。
 3. 把文件夹放到固定目录运行。首次打开时，在路径配置中选择 ComfyUI 根目录和对应的 `python.exe`。
 4. 点击“一键启动”。启动器会直接执行最终命令，不再弹出二次确认；命令仍会记录在控制台日志中。
@@ -101,9 +101,9 @@ ComfyUI 日志与启动器日志分区显示，支持错误高亮和目录快捷
 
 ### 更新启动器
 
-启动器打开后会在「一键启动」页后台检查 GitHub 最新正式 Release。发现新版时，按钮会显示“一键更新至 vX”；更新包只接受 `FeiHu-ComfyUI-Launcher-vX.Y.zip` 正式附件，下载后校验 SHA256 与运行库结构，再由独立更新器完成替换和重启。
+启动器打开后会在「一键启动」页后台检查 GitHub 最新正式 Release。发现新版时，按钮会显示“一键更新至 vX”；更新包接受 `FeiHu-ComfyUI-Launcher-vX.Y.7z` 正式附件（旧版 `zip` 附件仍兼容），下载后校验 SHA256 与运行库结构，再由独立更新器完成替换和重启。
 
-更新会替换启动器、图片管理器及其运行库，保留 `launcher_config.json`、本地路径、背景图、缓存与日志。发布新版时，使用 `tools/push_release.py` 上传 ZIP；脚本会同时上传同名 `.sha256` 校验附件。
+更新会替换启动器、图片管理器及其运行库，保留 `launcher_config.json`、本地路径、背景图、缓存与日志。发布新版时，使用 `tools/make_release.py` 生成 7z、`tools/push_release.py` 上传；脚本会同时上传同名 `.sha256` 校验附件。
 
 ### 从源码运行
 
